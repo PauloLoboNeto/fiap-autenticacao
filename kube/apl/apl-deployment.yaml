@@ -65,6 +65,11 @@ spec:
                 configMapKeyRef:
                   name: fiap-autenticacao-config
                   key: spring_jpa_hibernate_ddl-auto
+            - name: jwt.secret
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: jwt_secret
 #            - name: spring.datasource.driver-class-name
 #              valueFrom:
 #                configMapKeyRef:
