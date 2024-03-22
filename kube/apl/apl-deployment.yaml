@@ -65,6 +65,11 @@ spec:
                 configMapKeyRef:
                   name: fiap-autenticacao-config
                   key: spring_jpa_hibernate_ddl-auto
+            - name: spring.datasource.driver-class-name
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: spring_datasource_driver_class_name
 
           ports:
             - containerPort: 9091
