@@ -1,0 +1,81 @@
+# Create a deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fiap-autenticacao
+spec:
+  selector:
+    matchLabels:
+      app: fiap-autenticacao
+  replicas: 1
+  template:
+    metadata:
+#      annotations:
+#        eks.amazonaws.com/role-arn: arn:aws:iam::231670762225:role/my-app-service-account
+      labels:
+        app: fiap-autenticacao
+    spec:
+      containers:
+        - name: fiap-autenticacao
+          image: plobon/fiap-autenticacao:v1
+          imagePullPolicy: "Always"
+          env:
+            - name: spring.application.name
+              valueFrom: 
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: spring_application_name
+            - name: server.servlet.context-path
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: server_servlet_context_path
+            - name: jwt.expiration
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: jwt_expiration
+            - name: server.port
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: server_port
+            - name: spring.jpa.properties.hibernate.dialect
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: spring_jpa_properties_hibernate_dialect
+            - name: spring.datasource.initialization-mode
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: spring_datasource_initialization-mode
+            - name: spring.datasource.initialize
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: spring_datasource_initialize
+            - name: spring.jpa.hibernate.show-sql
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: spring_jpa_hibernate_show-sql
+            - name: spring.jpa.hibernate.ddl-auto
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: spring_jpa_hibernate_ddl-auto
+            - name: jwt.secret
+              valueFrom:
+                configMapKeyRef:
+                  name: fiap-autenticacao-config
+                  key: jwt_secret
+#            - name: spring.datasource.driver-class-name
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: fiap-autenticacao-config
+#                  key: spring_datasource_driver_class_name
+
+          ports:
+            - containerPort: 9091
+
